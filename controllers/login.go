@@ -83,7 +83,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	t, _ := template.ParseFiles(viewPage)
+	t, _ := template.ParseFiles(viewPage, "views/_header.html")
 
 	data := map[string]interface{}{
 		"assets":            assetsUrl,
@@ -95,6 +95,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 		"login_err_bool":    login_err_bool,
 		"username_filled":   username_filled,
 		"username":          username,
+		"title":             "Login",
 	}
 
 	w.WriteHeader(http.StatusOK)
