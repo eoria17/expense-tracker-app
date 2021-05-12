@@ -10,5 +10,5 @@ type AppEngine struct {
 }
 
 func (ae AppEngine) Route(r *mux.Router) {
-
+	r.HandleFunc("/", ae.Login)
 }
