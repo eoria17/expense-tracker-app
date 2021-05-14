@@ -109,6 +109,7 @@ func (ae AppEngine) Register(w http.ResponseWriter, r *http.Request) {
 		"username":          username,
 		"email_filled":      email_filled,
 		"email":             email,
+		"title":             "Register",
 	}
 
 	w.WriteHeader(http.StatusOK)
