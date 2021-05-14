@@ -58,32 +58,32 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//search DB for login data
-		// if !username_err_bool && !password_err_bool {
+		if !username_err_bool && !password_err_bool {
 
-		// 	user := ae.GetCurrentUser(r.FormValue("username"))
+			user := ae.GetUser(r.FormValue("username"))
 
-		// 	if user.Password != r.FormValue("password") {
-		// 		login_err = "email or password is invalid"
-		// 		login_err_bool = true
-		// 	} else if user.Password == r.FormValue("password") {
-		// 		session.Values["logged_in"] = true
-		// 		session.Values["email"] = user.Email
+			if user.Password != r.FormValue("password") {
+				login_err = "email or password is invalid"
+				login_err_bool = true
+			} else if user.Password == r.FormValue("password") {
+				session.Values["logged_in"] = true
+				session.Values["username"] = user.Username
 
-		// 		err = session.Save(r, w)
-		// 		if err != nil {
-		// 			fmt.Println(err)
-		// 		}
+				err = session.Save(r, w)
+				if err != nil {
+					fmt.Println(err)
+				}
 
-		// 		//redirect to home
-		// 		http.Redirect(w, r, "/main", http.StatusFound)
-		// 		return
-		// 	}
+				//redirect to home
+				http.Redirect(w, r, "/home", http.StatusFound)
+				return
+			}
 
-		// }
+		}
 
 	}
 
-	t, _ := template.ParseFiles(viewPage, "views/_header.html")
+	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH)
 
 	data := map[string]interface{}{
 		"assets":            assetsUrl,

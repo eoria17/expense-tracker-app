@@ -2,7 +2,14 @@ package models
 
 import "gorm.io/gorm"
 
-type Test struct {
+type User struct {
+	Name     string
+	Username string
+	Password string
+
 	gorm.Model
-	Name string
+}
+
+func (User) TableName() string {
+	return "user"
 }

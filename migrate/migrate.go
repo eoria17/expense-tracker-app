@@ -14,5 +14,5 @@ func main() {
 
 	db := storage_.DB
 
-	db.AutoMigrate(&models.Test{})
+	db.AutoMigrate(&models.User{})
 }
