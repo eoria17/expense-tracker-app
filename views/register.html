@@ -1,0 +1,35 @@
+{{define "register"}}
+
+{{template "header" .}}
+
+<body>
+    <div class="wrapper">
+        <h2>Sign Up</h2>
+        <p>Please fill this form to create an account.</p>
+
+        <form action="/register" method="post">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" name="email" class="form-control {{if .email_err_bool}}is-invalid{{end}}" value="{{if .email_filled}}{{.email}}{{end}}">
+                <span class="invalid-feedback">{{.email_err}}</span>
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control {{if .username_err_bool}}is-invalid{{end}}" value="{{if .username_filled}}{{.username}}{{end}}">
+                <span class="invalid-feedback">{{.username_err}}</span>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control {{if .password_err_bool}}is-invalid{{end}}">
+                <span class="invalid-feedback">{{.password_err}}</span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+            <p>Already have an account? <a href="/">Login here</a>.</p>
+        </form>
+    </div>
+</body>
+
+</html>
+{{end}}

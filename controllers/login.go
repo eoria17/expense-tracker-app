@@ -62,10 +62,10 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 
 			user := ae.GetUser(r.FormValue("username"))
 
-			if user.Password != r.FormValue("password") {
+			if !CheckPasswordHash(r.FormValue("password"), user.Password) {
 				login_err = "email or password is invalid"
 				login_err_bool = true
-			} else if user.Password == r.FormValue("password") {
+			} else {
 				session.Values["logged_in"] = true
 				session.Values["username"] = user.Username
 

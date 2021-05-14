@@ -7,6 +7,7 @@ import (
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AppEngine struct {
@@ -15,6 +16,7 @@ type AppEngine struct {
 
 func (ae AppEngine) Route(r *mux.Router) {
 	r.HandleFunc("/", ae.Login)
+	r.HandleFunc("/register", ae.Register)
 	r.HandleFunc("/home", ae.Home)
 }
 
@@ -33,4 +35,9 @@ func (ae AppEngine) Home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte("Hello, " + session.Values["username"].(string) + "!"))
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
