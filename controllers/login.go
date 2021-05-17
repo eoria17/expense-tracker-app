@@ -21,10 +21,9 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	//if logged in redirect to main
+	//if logged in redirect to home
 	if auth, ok := session.Values["logged_in"].(bool); ok && auth {
-		http.Redirect(w, r, "/main", http.StatusFound)
-		return
+		http.Redirect(w, r, "/home", http.StatusFound)
 	}
 
 	viewPage := "views/login.html"
@@ -67,7 +66,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 				login_err_bool = true
 			} else {
 				session.Values["logged_in"] = true
-				session.Values["username"] = user.Username
+				session.Values["user"] = user
 
 				err = session.Save(r, w)
 				if err != nil {
@@ -83,7 +82,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH)
+	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
 	data := map[string]interface{}{
 		"assets":            assetsUrl,

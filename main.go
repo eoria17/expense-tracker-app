@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/controllers"
+	"github.com/eoria17/expense-tracker-app/models"
 	"github.com/gorilla/mux"
 )
 
@@ -29,6 +31,9 @@ func main() {
 	//serve public as static file
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./public/"))))
 	http.Handle("/assets/", router)
+
+	//specify gob for sessions
+	gob.Register(models.User{})
 
 	//run server
 	fmt.Println("Currently Listening to port 8080..")
