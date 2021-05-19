@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
 	"github.com/gorilla/mux"
@@ -8,7 +9,8 @@ import (
 )
 
 type AppEngine struct {
-	Storage *config.Storage
+	Storage  *config.Storage
+	S3Client *s3manager.Uploader
 }
 
 func (ae AppEngine) Route(r *mux.Router) {

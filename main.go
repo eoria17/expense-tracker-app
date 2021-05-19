@@ -6,6 +6,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/controllers"
 	"github.com/eoria17/expense-tracker-app/models"
@@ -19,9 +23,27 @@ func main() {
 		panic(err)
 	}
 
+	//create AWS session
+	creds := credentials.NewStaticCredentials(config.ACCESS_KEY_ID, config.SECRET_ACCESS_KEY, "")
+	creds.Get()
+
+	sess, err := session.NewSession(&aws.Config{
+		Region:      aws.String("ap-southeast-2"),
+		Credentials: creds,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//S3 AWS client
+	//s3c := s3.New(sess)
+	s3uploader := s3manager.NewUploader(sess)
+
 	//dependency injection
 	appEngine := controllers.AppEngine{
-		Storage: storage_,
+		Storage:  storage_,
+		S3Client: s3uploader,
 	}
 
 	//create route handler
