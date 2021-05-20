@@ -45,7 +45,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 		//check if username or password is null
 		if r.FormValue("username") == "" {
 			username_err_bool = true
-			username_err = "Please enter email."
+			username_err = "Please enter username."
 		} else {
 			username_filled = true
 			username = r.FormValue("username")
