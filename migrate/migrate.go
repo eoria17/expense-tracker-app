@@ -15,4 +15,5 @@ func main() {
 	db := storage_.DB
 
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Wallet{})
 }

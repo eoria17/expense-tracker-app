@@ -21,6 +21,23 @@ func (ae AppEngine) AddWallet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//check for submitted data
+	if r.FormValue("name") != "" {
+		//add new wallet to database
+		newWallet := models.Wallet{
+			Name:    r.FormValue("name"),
+			User: session.Values["user"].(models.User).Username,
+		}
+
+		ae.Storage.DB.Create(&newWallet)
+
+		//redirect to wallets page
+		http.Redirect(w, r, "/wallets", http.StatusFound)
+
+		return
+	}
+
+
 	viewPage := "views/addWallet.html"
 	assetsUrl := "http://" + r.Host + "/assets/"
 

@@ -13,3 +13,14 @@ type User struct {
 func (User) TableName() string {
 	return "users"
 }
+
+type Wallet struct {
+	Name	        string
+	User            string
+
+	gorm.Model
+}
+
+func (Wallet) TableName() string {
+	return "wallet"
+}
