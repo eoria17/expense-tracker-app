@@ -17,6 +17,7 @@ func (ae AppEngine) Route(r *mux.Router) {
 	r.HandleFunc("/register", ae.Register)
 	r.HandleFunc("/home", ae.Home)
 	r.HandleFunc("/wallets", ae.Wallets)
+	r.HandleFunc("/addWallet", ae.AddWallet)
 }
 
 func (ae AppEngine) GetUser(username string) (CurrentUser *models.User) {
