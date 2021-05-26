@@ -42,7 +42,6 @@ func (Category) TableName() string {
 
 type Account struct {
 	Name   string
-	Amount float64
 	UserID uint
 	User   User
 

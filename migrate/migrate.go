@@ -53,7 +53,6 @@ func DataSeed(db *gorm.DB) {
 	//test account
 	account := models.Account{
 		Name:   "Bank Account",
-		Amount: 1000.0,
 		UserID: user.ID,
 	}
 

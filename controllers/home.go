@@ -25,7 +25,6 @@ func (ae AppEngine) Home(w http.ResponseWriter, r *http.Request) {
 	assetsUrl := "http://" + r.Host + "/assets/"
 
 	username := ""
-
 	username = session.Values["user"].(models.User).Username
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)

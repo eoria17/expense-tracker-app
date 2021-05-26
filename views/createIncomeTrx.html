@@ -1,0 +1,82 @@
+{{define "create_expense_trx"}} {{template "header" .}}
+
+<body>
+    <!-- Nav Bar -->
+    {{template "navigation" .}}
+
+    <div class="container mt-5">
+        <h1>
+            Create Transaction
+            <small class="text-muted">(Income)</small>
+        </h1>
+
+        {{if .error_message_bool}}
+        <div class="alert alert-danger mt-3"> {{.error_message}} </div>
+        {{end}}
+
+        <main class="mt-3" role="main">
+            <form action="/transaction/create/expense" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group row">
+                    <label for="transactionDate" class="col-sm-2 col-form-label text-center">Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="transactionDate" name="transactionDate">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="account" class="col-sm-2 col-form-label text-center">Account</label>
+                    <div class="col-sm-10">
+                        <select name="account" class="align-middle">
+                            {{range .Accounts}}
+                            <option value="{{.ID}}">{{.Name}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="category" class="col-sm-2 col-form-label text-center">Category</label>
+                    <div class="col-sm-10">
+                        <select name="category">
+                            {{range .Categories}}
+                            <option value="{{.ID}}">{{.Name}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="amount" class="col-sm-2 col-form-label text-center">Amount (AUD)</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="amount" name="amount">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="notes" class="col-sm-2 col-form-label text-center">Notes</label>
+                    <div class="col-sm-10">
+                        <textarea name="notes" id="notes" cols="50" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="image" class="col-sm-2 col-form-label text-center">Image</label>
+                    <div class="col-sm-10">
+                        <input type="file" id="myFile" name="image">
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </div>
+            </form>
+        </main>
+
+    </div>
+
+</body>
+
+</html>
+
+{{end}}
