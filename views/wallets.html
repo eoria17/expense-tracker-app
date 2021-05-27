@@ -6,6 +6,11 @@
 
     <div class="container">
         <h1>My Wallets</h1>
+
+        {{range .walletsData}} 
+            {{.}} <br>
+        {{end}}
+        
         <a href="/addWallet">Add new wallet</a>
     </div>
 

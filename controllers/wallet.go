@@ -32,7 +32,7 @@ func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
 	wallets := []models.Wallet{}
 	ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&wallets)
 
-	
+	//code :=   route.Vars(r)["code"]
 
 
 

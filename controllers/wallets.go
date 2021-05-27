@@ -28,12 +28,25 @@ func (ae AppEngine) Wallets(w http.ResponseWriter, r *http.Request) {
 
 	username = session.Values["user"].(models.User).Username
 
+	//get user's wallets from database
+	wallets := []models.Wallet{}
+	var name []string
+	//ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&names)
+
+	
+    ae.Storage.DB.Where("user_id = ?", 1).Find(&wallets)
+
+
+
+	//fmt.Printf("%v", wallets)
+
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
 	data := map[string]interface{}{
-		"title":    "Wallets",
-		"assets":   assetsUrl,
-		"username": username,
+		"title":       "Wallets",
+		"assets":      assetsUrl,
+		"username":    username,
+		"walletsData": wallets,
 	}
 
 	w.WriteHeader(http.StatusOK)
