@@ -30,11 +30,11 @@ func (ae AppEngine) Wallets(w http.ResponseWriter, r *http.Request) {
 
 	//get user's wallets from database
 	wallets := []models.Wallet{}
-	var name []string
+	//var name []string
 	//ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&names)
 
 	
-    ae.Storage.DB.Where("user_id = ?", 1).Find(&wallets)
+    ae.Storage.DB.Where("user_id = ?", username).Find(&wallets)
 
 
 
