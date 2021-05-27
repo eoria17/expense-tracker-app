@@ -33,12 +33,7 @@ func (ae AppEngine) Wallets(w http.ResponseWriter, r *http.Request) {
 	//var name []string
 	//ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&names)
 
-	
-    ae.Storage.DB.Where("user_id = ?", username).Find(&wallets)
-
-
-
-	//fmt.Printf("%v", wallets)
+    ae.Storage.DB.Where("wallet.user = ?", username).Find(&wallets)
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 

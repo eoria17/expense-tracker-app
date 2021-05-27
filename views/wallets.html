@@ -8,9 +8,10 @@
         <h1>My Wallets</h1>
 
         {{range .walletsData}} 
-            {{.}} <br>
+            <a href="/wallet/{{.Name}}">{{.Name}}</a> <br>
         {{end}}
         
+        <br>
         <a href="/wallet/create">Add new wallet</a>
     </div>
 
