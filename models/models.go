@@ -44,6 +44,7 @@ type Account struct {
 	Name   string
 	UserID uint
 	User   User
+	Amount float64
 
 	Transactions []Transaction
 
