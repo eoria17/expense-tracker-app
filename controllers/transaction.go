@@ -81,11 +81,34 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println(err)
 			}
+			//get category id using category name and user_id
+			user_id := session.Values["user"].(models.User).ID
+			categoryName := r.FormValue("category")
+
+			category := -1
+			//ae.Storage.DB.Select("categories.ID").Where("categories.name = ? and categories.user_id = ", categoryName, user_id).First(&category)
+			ae.Storage.DB.Raw("SELECT id FROM categories WHERE name = ? and user_id = ?", categoryName, user_id).Scan(&category)
+
+			//if category doesn't exist create it
+			if category < 0{
+				//create category
+				newCategory := models.Category{
+					Name: categoryName,
+					TransactionType: "expense",
+					UserID:     session.Values["user"].(models.User).ID,
+				}
+	
+				db.Create(&newCategory)
+
+				//get id of new category
+				ae.Storage.DB.Raw("SELECT id FROM categories WHERE name = ?", categoryName).Scan(&category)
+			}
 
 			//save transaction
 
 			account_id, _ = strconv.Atoi(r.FormValue("account"))
-			category_id, _ = strconv.Atoi(r.FormValue("category"))
+			category_id = category
+			//category_id, _ = strconv.Atoi(r.FormValue("category"))
 			amount, _ = strconv.ParseFloat(r.FormValue("amount"), 64)
 
 			trx := models.Transaction{
@@ -97,6 +120,8 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 				Note:       r.FormValue("notes"),
 				ImgURL:     config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg",
 			}
+
+			fmt.Println(category_id)
 
 			db.Create(&trx)
 			http.Redirect(w, r, "/", http.StatusFound)
@@ -188,11 +213,35 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println(err)
 			}
+			//get category id using category name and user_id
+			user_id := session.Values["user"].(models.User).ID
+			categoryName := r.FormValue("category")
+
+			category := -1
+			//ae.Storage.DB.Select("categories.ID").Where("categories.name = ? and categories.user_id = ", categoryName, user_id).First(&category)
+			ae.Storage.DB.Raw("SELECT id FROM categories WHERE name = ? and user_id = ?", categoryName, user_id).Scan(&category)
+
+			//if category doesn't exist create it
+			if category < 0{
+				//create category
+				newCategory := models.Category{
+					Name: categoryName,
+					TransactionType: "income",
+					UserID:     session.Values["user"].(models.User).ID,
+				}
+	
+				db.Create(&newCategory)
+
+				//get id of new category
+				ae.Storage.DB.Raw("SELECT id FROM categories WHERE name = ?", categoryName).Scan(&category)
+			}
+
 
 			//save transaction
 
 			account_id, _ = strconv.Atoi(r.FormValue("account"))
-			category_id, _ = strconv.Atoi(r.FormValue("category"))
+			//category_id, _ = strconv.Atoi(r.FormValue("category"))
+			category_id = category
 			amount, _ = strconv.ParseFloat(r.FormValue("amount"), 64)
 
 			trx := models.Transaction{
@@ -225,5 +274,5 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	t.ExecuteTemplate(w, "create_expense_trx", data)
+	t.ExecuteTemplate(w, "create_income_trx", data)
 }
