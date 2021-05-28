@@ -28,7 +28,7 @@ func main() {
 	creds.Get()
 
 	sess, err := session.NewSession(&aws.Config{
-		Region:      aws.String("ap-southeast-2"),
+		Region:      aws.String(config.AWS_REGION),
 		Credentials: creds,
 	})
 
