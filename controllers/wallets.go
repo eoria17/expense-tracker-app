@@ -27,13 +27,14 @@ func (ae AppEngine) Wallets(w http.ResponseWriter, r *http.Request) {
 	username := ""
 
 	username = session.Values["user"].(models.User).Username
+	user_id := session.Values["user"].(models.User).ID
 
 	//get user's wallets from database
-	wallets := []models.Wallet{}
+	wallets := []models.Account{}
 	//var name []string
 	//ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&names)
 
-    ae.Storage.DB.Where("wallet.user = ?", username).Find(&wallets)
+    ae.Storage.DB.Where("accounts.user_id = ?", user_id).Find(&wallets)
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
