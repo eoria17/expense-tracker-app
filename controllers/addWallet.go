@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"text/template"
+	"strconv"
 
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
@@ -21,12 +22,19 @@ func (ae AppEngine) AddWallet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	amount, err := strconv.ParseFloat(r.FormValue("amount"), 64)
+
+	if err != nil{
+		fmt.Println(err)
+	}
+
 	//check for submitted data
 	if r.FormValue("name") != "" {
 		//add new wallet to database
-		newWallet := models.Wallet{
+		newWallet := models.Account{
 			Name:    r.FormValue("name"),
-			User: session.Values["user"].(models.User).Username,
+			UserID: session.Values["user"].(models.User).ID,
+			Amount: amount,
 		}
 
 		ae.Storage.DB.Create(&newWallet)
@@ -44,7 +52,6 @@ func (ae AppEngine) AddWallet(w http.ResponseWriter, r *http.Request) {
 	username := ""
 
 	username = session.Values["user"].(models.User).Username
-
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
 	data := map[string]interface{}{
