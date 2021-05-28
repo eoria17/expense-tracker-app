@@ -1,0 +1,21 @@
+{{define "wallets"}} {{template "header" .}}
+
+<body>
+    <!-- Nav Bar -->
+    {{template "navigation" .}}
+
+    <div class="container">
+        <h1>My Wallets</h1>
+
+        {{range .walletsData}} 
+            <a href="/wallet/{{.Name}}">{{.Name}}</a> <br>
+        {{end}}
+        
+        <br>
+        <a href="/wallet/create">Add new wallet</a>
+    </div>
+
+</body>
+
+</html>
+{{end}}

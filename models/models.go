@@ -66,10 +66,18 @@ type Transaction struct {
 	Amount     float64
 	Note       string
 	ImgURL     string
-
-	gorm.Model
 }
 
 func (Transaction) TableName() string {
 	return "transactions"
+}
+type Wallet struct {
+	Name	        string
+	User            string
+
+	gorm.Model
+}
+
+func (Wallet) TableName() string {
+	return "wallet"
 }
