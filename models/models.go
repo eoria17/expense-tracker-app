@@ -71,13 +71,3 @@ type Transaction struct {
 func (Transaction) TableName() string {
 	return "transactions"
 }
-type Wallet struct {
-	Name	        string
-	User            string
-
-	gorm.Model
-}
-
-func (Wallet) TableName() string {
-	return "wallet"
-}
