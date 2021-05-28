@@ -23,7 +23,7 @@ func (ae AppEngine) Route(r *mux.Router) {
 	r.HandleFunc("/transaction/create/income", ae.CreateIncomeTrx)
 	r.HandleFunc("/wallets", ae.Wallets)
 	r.HandleFunc("/wallet/create", ae.AddWallet)
-	r.HandleFunc("/wallet/{walletName}", ae.Wallet)
+	r.HandleFunc("/wallet/{walletID}", ae.Wallet)
 }
 
 func (ae AppEngine) GetUser(username string) (CurrentUser *models.User) {

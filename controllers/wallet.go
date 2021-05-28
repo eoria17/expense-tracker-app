@@ -7,6 +7,7 @@ import (
 
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
+	"github.com/gorilla/mux"
 )
 
 func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
@@ -28,15 +29,17 @@ func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
 
 	username = session.Values["user"].(models.User).Username
 
-	//get user's wallets from database
-	wallets := []models.Wallet{}
-	ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&wallets)
+	//TODO
+	vars := mux.Vars(r)
+    wallet_id := vars["walletID"]
 
-	//code :=   route.Vars(r)["code"]
+	//wallet_id := 1
 
+	//get user's wallet from database
+	wallet := models.Account{}
+	ae.Storage.DB.Where("accounts.id = ?", wallet_id).First(&wallet)
 
-
-	//fmt.Printf("%v", wallets)
+	//fmt.Printf("%v", wallet)
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
@@ -44,9 +47,9 @@ func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
 		"title":       "Wallet",
 		"assets":      assetsUrl,
 		"username":    username,
-		"walletsData": wallets,
+		"walletData":  wallet,
 	}
 
 	w.WriteHeader(http.StatusOK)
-	t.ExecuteTemplate(w, "wallets", data)
+	t.ExecuteTemplate(w, "wallet", data)
 }

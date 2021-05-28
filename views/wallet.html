@@ -1,11 +1,12 @@
-{{define "wallets"}} {{template "header" .}}
+{{define "wallet"}} {{template "header" .}}
 
 <body>
     <!-- Nav Bar -->
     {{template "navigation" .}}
 
     <div class="container">
-        <h1>Wallet</h1>
+        <h1>{{.walletData.Name}}</h1>
+        <h2>Balance: {{.walletData.Amount}}</h2>
 
     </div>
 
