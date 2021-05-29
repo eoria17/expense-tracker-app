@@ -9,7 +9,7 @@
         <h2>Balance: {{.walletData.Amount}}</h2>
 
         {{range .transactions}} 
-            <p>{{.Date}} ${{.Amount}}</p> <br>
+            <p>{{.Date.Format "02-01-2006 15:04"}} ${{.Amount}}</p> <br>
         {{end}}
 
     </div>
