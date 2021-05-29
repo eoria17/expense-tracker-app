@@ -4,16 +4,20 @@
     <!-- Nav Bar -->
     {{template "navigation" .}}
 
-    <div class="container">
+    <div class="wrapper">
         <h1>Add new Wallet</h1>
         <form method="POST">
-            <input type="text" name="name" placeholder="Wallet name" required><br>
-            <input type="number" name="amount" placeholder="amount" required><br>
-            
-            <input type="submit" value="Create wallet">
-
-
-
+            <div class="form-group">
+                <label>Wallet Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Wallet name" required><br>
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" class="form-control" name="amount" placeholder="amount" required><br>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Create wallet">
+            </div>
         </form>
     </div>
 
