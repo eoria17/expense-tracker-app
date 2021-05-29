@@ -24,6 +24,7 @@ func (ae AppEngine) Route(r *mux.Router) {
 	r.HandleFunc("/wallets", ae.Wallets)
 	r.HandleFunc("/wallet/create", ae.AddWallet)
 	r.HandleFunc("/wallet/{walletID}", ae.Wallet)
+	r.HandleFunc("/wallet/delete/{walletID}", ae.DeleteWallet)
 }
 
 func (ae AppEngine) GetUser(username string) (CurrentUser *models.User) {
