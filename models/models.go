@@ -66,6 +66,8 @@ type Transaction struct {
 	Amount     float64
 	Note       string
 	ImgURL     string
+
+	gorm.Model
 }
 
 func (Transaction) TableName() string {
