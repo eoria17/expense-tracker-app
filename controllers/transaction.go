@@ -276,3 +276,41 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	t.ExecuteTemplate(w, "create_income_trx", data)
 }
+
+func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
+	session, err := store.Get(r, "user_cookie")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//if not logged in
+	if auth, ok := session.Values["logged_in"].(bool); !ok && !auth {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	
+
+
+	viewPage := "views/transaction.html"
+	assetsUrl := "http://" + r.Host + "/assets/"
+
+	username := ""
+
+	username = session.Values["user"].(models.User).Username
+	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
+
+	data := map[string]interface{}{
+		"title":    "Transaction",
+		"assets":   assetsUrl,
+		"username": username,
+	}
+
+	w.WriteHeader(http.StatusOK)
+	t.ExecuteTemplate(w, "transaction", data)
+}
+

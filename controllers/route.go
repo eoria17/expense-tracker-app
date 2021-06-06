@@ -21,6 +21,7 @@ func (ae AppEngine) Route(r *mux.Router) {
 
 	r.HandleFunc("/transaction/create/expense", ae.CreateExpenseTrx)
 	r.HandleFunc("/transaction/create/income", ae.CreateIncomeTrx)
+	r.HandleFunc("/transaction/{ID}", ae.Transaction)
 	r.HandleFunc("/wallets", ae.Wallets)
 	r.HandleFunc("/wallet/create", ae.AddWallet)
 	r.HandleFunc("/wallet/{walletID}", ae.Wallet)
