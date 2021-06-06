@@ -125,6 +125,26 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(category_id)
 
 			db.Create(&trx)
+
+			//update account balance
+			//get account from database
+			account := models.Account{}
+			ae.Storage.DB.Where("accounts.id = ?", account_id).First(&account)
+
+			//get transaction category from database
+			transactionCategory := models.Category{}
+			ae.Storage.DB.Where("categories.id = ?", category_id).First(&transactionCategory)
+
+			//update account balance
+			if transactionCategory.TransactionType == "expense" {
+				account.Amount = account.Amount - amount
+			} else if transactionCategory.TransactionType == "income" {
+				account.Amount = account.Amount + amount
+			}
+
+			//save account change to db
+			ae.Storage.DB.Save(&account)
+
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
@@ -256,6 +276,27 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 			}
 
 			db.Create(&trx)
+
+			//update account balance
+			//get account from database
+			account := models.Account{}
+			ae.Storage.DB.Where("accounts.id = ?", account_id).First(&account)
+
+			//get transaction category from database
+			transactionCategory := models.Category{}
+			ae.Storage.DB.Where("categories.id = ?", category_id).First(&transactionCategory)
+
+			//update account balance
+			if transactionCategory.TransactionType == "expense" {
+				account.Amount = account.Amount - amount
+			} else if transactionCategory.TransactionType == "income" {
+				account.Amount = account.Amount + amount
+			}
+
+			//save account change to db
+			ae.Storage.DB.Save(&account)
+
+
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
