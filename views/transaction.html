@@ -5,7 +5,12 @@
     {{template "navigation" .}}
 
     <div class="wrapper">
-        <h1>Transaction</h1>
+        <h1>{{.category.Name}}</h1>
+        <p>{{.transactionData.Note}}</p>
+        <p>{{.transactionData.Date.Format "02-01-2006 15:04"}}</p>
+        <p>${{.transactionData.Amount}}</p>
+        <img src="{{.transactionData.ImgURL}}" width="200" height="200">
+        
     </div>
 
 </body>

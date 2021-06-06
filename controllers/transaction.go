@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
+	"github.com/gorilla/mux"
 )
 
 func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
@@ -118,7 +119,7 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 				UserID:     session.Values["user"].(models.User).ID,
 				Amount:     amount,
 				Note:       r.FormValue("notes"),
-				ImgURL:     config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg",
+				ImgURL:     config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02") + "+" + date.Format("15") + "%3A" + date.Format("04") + "%3A" + date.Format("05") + ".jpg",
 			}
 
 			fmt.Println(category_id)
@@ -251,7 +252,7 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 				UserID:     session.Values["user"].(models.User).ID,
 				Amount:     amount,
 				Note:       r.FormValue("notes"),
-				ImgURL:     config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg",
+				ImgURL:     config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02") + "+" + date.Format("15") + "%3A" + date.Format("04") + "%3A" + date.Format("05") + ".jpg",
 			}
 
 			db.Create(&trx)
@@ -293,7 +294,17 @@ func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
+	//get transaction id from url
+	vars := mux.Vars(r)
+    transaction_id := vars["ID"]
+
+	//get transaction data from database
+	transactionData := models.Transaction{}
+	ae.Storage.DB.Where("transactions.id = ?", transaction_id).First(&transactionData)
 	
+	//get transaction category 
+	category := models.Category{}
+	ae.Storage.DB.Where("categories.id = ?", transactionData.CategoryID).First(&category)
 
 
 	viewPage := "views/transaction.html"
@@ -308,6 +319,8 @@ func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
 		"title":    "Transaction",
 		"assets":   assetsUrl,
 		"username": username,
+		"transactionData": transactionData,
+		"category": category,
 	}
 
 	w.WriteHeader(http.StatusOK)
