@@ -9,7 +9,7 @@
         <h2>Balance: {{.walletData.Amount}}</h2>
 
         {{range .transactions}} 
-            <p>{{.Date.Format "02-01-2006 15:04"}} ${{.Amount}}</p> <br>
+            <a href="/transaction/{{.ID}}">{{.Date.Format "02-01-2006 15:04"}} ${{.Amount}}</a> <br>
         {{end}}
 
         <a href="/wallet/delete/{{.walletData.ID}}">Delete wallet</a>
