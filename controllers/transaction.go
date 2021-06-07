@@ -145,7 +145,10 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 			//save account change to db
 			ae.Storage.DB.Save(&account)
 
-			http.Redirect(w, r, "/", http.StatusFound)
+			//send user back to wallet page
+			url := "/wallet/" + strconv.Itoa(account_id)
+
+			http.Redirect(w, r, url, http.StatusFound)
 			return
 		}
 	}
@@ -296,8 +299,10 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 			//save account change to db
 			ae.Storage.DB.Save(&account)
 
+			//send user back to wallet page
+			url := "/wallet/" + strconv.Itoa(account_id)
 
-			http.Redirect(w, r, "/", http.StatusFound)
+			http.Redirect(w, r, url, http.StatusFound)
 			return
 		}
 	}
