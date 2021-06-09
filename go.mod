@@ -3,7 +3,7 @@ module github.com/eoria17/expense-tracker-app
 go 1.16
 
 require (
-	github.com/aws/aws-sdk-go v1.38.40
+	github.com/aws/aws-sdk-go v1.38.57
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/sessions v1.2.1
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
