@@ -20,7 +20,7 @@
                 <div class="form-group row">
                     <label for="transactionDate" class="col-sm-2 col-form-label text-center">Date</label>
                     <div class="col-sm-10">
-                        <input type="date" class="form-control" id="transactionDate" name="transactionDate">
+                        <input type="date" class="form-control" id="transactionDate" name="transactionDate" required>
                     </div>
                 </div>
 
@@ -39,7 +39,6 @@
                     <label for="category" class="col-sm-2 col-form-label text-center">Category</label>
                     <div class="col-sm-10">
                         <input type="text" list="categories" name="category" />
-
                         <datalist id="categories">
                             <option value="Chocolate">
                                 {{range .Categories}}
@@ -52,7 +51,7 @@
                 <div class="form-group row">
                     <label for="amount" class="col-sm-2 col-form-label text-center">Amount (AUD)</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="amount" name="amount">
+                        <input type="number" class="form-control" id="amount" name="amount" step="any">
                     </div>
                 </div>
 
