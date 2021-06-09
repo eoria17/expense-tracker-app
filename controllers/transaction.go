@@ -340,13 +340,15 @@ func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
+	user_id := session.Values["user"].(models.User).ID
+
 	//get transaction id from url
 	vars := mux.Vars(r)
     transaction_id := vars["ID"]
 
 	//get transaction data from database
 	transactionData := models.Transaction{}
-	ae.Storage.DB.Where("transactions.id = ?", transaction_id).First(&transactionData)
+	ae.Storage.DB.Where("transactions.id = ? AND transactions.user_id = ?", transaction_id, user_id).First(&transactionData)
 	
 	//get transaction category 
 	category := models.Category{}

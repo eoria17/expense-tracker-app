@@ -33,9 +33,11 @@ func (ae AppEngine) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
     transaction_id := vars["transactionID"]
 
+	user_id := session.Values["user"].(models.User).ID
+
 	//get transaction from database
 	transaction := models.Transaction{}
-	ae.Storage.DB.Where("transactions.id = ?", transaction_id).First(&transaction)
+	ae.Storage.DB.Where("transactions.id = ? AND transactions.user_id = ?", transaction_id, user_id).First(&transaction)
 
 	//get account from database
 	account := models.Account{}
@@ -45,7 +47,7 @@ func (ae AppEngine) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
 	category := models.Category{}
 	ae.Storage.DB.Where("categories.id = ?", transaction.CategoryID).First(&category)
 
-	println("########### transaction type: " + category.TransactionType + "###############")
+	//println("########### transaction type: " + category.TransactionType + "###############")
 
 	//update account balance
 	if category.TransactionType == "expense" {

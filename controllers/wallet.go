@@ -28,6 +28,7 @@ func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
 	username := ""
 
 	username = session.Values["user"].(models.User).Username
+	user_id := session.Values["user"].(models.User).ID
 
 	//get wallet ID from url
 	vars := mux.Vars(r)
@@ -35,11 +36,11 @@ func (ae AppEngine) Wallet(w http.ResponseWriter, r *http.Request) {
 
 	//get user's wallet from database
 	wallet := models.Account{}
-	ae.Storage.DB.Where("accounts.id = ?", wallet_id).First(&wallet)
+	ae.Storage.DB.Where("accounts.id = ? AND accounts.user_id = ?", wallet_id, user_id).First(&wallet)
 
 	//get wallet's transactions from database
 	transactions := []models.Transaction{}
-	ae.Storage.DB.Where("transactions.account_id = ?", wallet_id).Find(&transactions)
+	ae.Storage.DB.Where("transactions.account_id = ? AND transactions.user_id = ?", wallet_id, user_id).Find(&transactions)
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 
