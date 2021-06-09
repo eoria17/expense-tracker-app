@@ -37,8 +37,9 @@ func (ae AppEngine) DeleteWallet(w http.ResponseWriter, r *http.Request) {
 	//delete wallet
 	ae.Storage.DB.Delete(&models.Account{}, wallet_id)
 
-	//TODO
-	//delete transactions from wallet??
+	//delete transactions from wallet
+	transactions := []models.Transaction{}
+	ae.Storage.DB.Where("transactions.account_id = ?", wallet_id).Delete(&transactions)
 
 	//send user to wallets page
 	http.Redirect(w, r, "/wallets", http.StatusFound)
