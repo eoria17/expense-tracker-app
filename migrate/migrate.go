@@ -27,6 +27,11 @@ func main() {
 }
 
 func DataSeed(db *gorm.DB) {
+	db.Unscoped().Where("id != ?", 0).Delete(&models.Transaction{})
+	db.Unscoped().Where("id != ?", 0).Delete(&models.Category{})
+	db.Unscoped().Where("id != ?", 0).Delete(&models.Account{})
+	db.Unscoped().Where("id != ?", 0).Delete(&models.User{})
+
 	//test user
 	password, err := bcrypt.GenerateFromPassword([]byte("admin"), 14)
 	if err != nil {
