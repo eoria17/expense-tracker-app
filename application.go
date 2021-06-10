@@ -58,6 +58,6 @@ func main() {
 	gob.Register(models.User{})
 
 	//run server
-	fmt.Println("Currently Listening to port 8080..")
-	log.Println(http.ListenAndServe(":8080", router))
+	fmt.Println("Currently Listening to port 5000..")
+	log.Println(http.ListenAndServe(":5000", router))
 }
