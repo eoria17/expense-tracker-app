@@ -67,7 +67,7 @@ func (ae AppEngine) Home(w http.ResponseWriter, r *http.Request) {
 
 	//get time for transactions
 	var dates []time.Time
-	db.Raw("SELECT CAST(date AS DATE) FROM transactions GROUP BY CAST(date AS DATE)").Scan(&dates)
+	db.Raw("SELECT CAST(date AS DATE) FROM transactions GROUP BY CAST(date AS DATE) ORDER BY date DESC").Scan(&dates)
 
 	for _, date := range dates {
 		DashboardTransactionData := models.DashboardTransactionsView{
