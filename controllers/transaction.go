@@ -100,7 +100,11 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 			error_message_bool = true
 		}
 
-		account_id, _ = strconv.Atoi(r.FormValue("account"))
+		account_id, err = strconv.Atoi(r.FormValue("account"))
+		if err != nil || account_id == 0 {
+			error_message = "Please create a saving account in the 'wallets' section."
+			error_message_bool = true
+		}
 		amount, err = strconv.ParseFloat(r.FormValue("amount"), 64)
 		if err != nil || amount <= 0 {
 			error_message = "Amount must not be empty and must be greater than 0."
@@ -262,7 +266,11 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 			error_message_bool = true
 		}
 
-		account_id, _ = strconv.Atoi(r.FormValue("account"))
+		account_id, err = strconv.Atoi(r.FormValue("account"))
+		if err != nil || account_id == 0 {
+			error_message = "Please create a saving account in the 'wallets' section."
+			error_message_bool = true
+		}
 		amount, err = strconv.ParseFloat(r.FormValue("amount"), 64)
 		if err != nil || amount <= 0 {
 			error_message = "Amount must not be empty and must be greater than 0."
@@ -364,8 +372,8 @@ func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
 	//get transaction data from database
 	transactionData := models.Transaction{}
 	ae.Storage.DB.Where("transactions.id = ? AND transactions.user_id = ?", transaction_id, user_id).First(&transactionData)
-	
-	//get transaction category 
+
+	//get transaction category
 	category := models.Category{}
 	ae.Storage.DB.Where("categories.id = ?", transactionData.CategoryID).First(&category)
 
