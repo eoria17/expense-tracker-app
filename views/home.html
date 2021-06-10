@@ -4,6 +4,79 @@
     <!-- Nav Bar -->
     {{template "navigation" .}}
 
+    <div class="container mt-5">
+        <h1>
+            Transactions
+            <small class="text-muted">({{.DashboardData.MonthYear}})</small>
+        </h1>
+
+        <div class="row border border-white rounded-lg mt-2">
+            <div class="col-sm-4 pt-2 border-right border-white">
+                <strong>Income This Month:</strong>
+                <h2 class="mt-2 text-success">$ {{.DashboardData.Income}}</h2>
+            </div>
+
+            <div class="col-sm-4 pt-2 border-right border-white">
+                <strong>Expense This Month:</strong>
+                <h2 class="mt-2 text-danger">$ {{.DashboardData.Expenses}}</h2>
+            </div>
+
+            <div class="col-sm-4 pt-2">
+                <strong>Total:</strong>
+                <h2 class="mt-2">$ {{.DashboardData.Total}}</h2>
+            </div>
+        </div>
+
+
+        {{range .DashboardData.Transactions}}
+        <div class="row">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            <strong>{{.Day}}</strong><span class="ml-1">{{.Date}}</span>
+                        </div>
+
+                        <div class="col-2 text-success text-right">
+                            $ {{.TotalIncome}}
+                        </div>
+                        <div class="col-2 text-danger text-right">
+                            $ {{.TotalExpenses}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body pt-0 pb-0">
+                    {{range .Transactions}}
+
+                    <div class="row border-bottom pb-3 pt-2 mt-1">
+                        <div class="col-3">
+                            {{.Category.Name}}
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <strong>{{.Note}}</strong>
+                            </div>
+                            <div class="row">
+                                {{.Account.Name}}
+                            </div>
+                        </div>
+                        <div class='col-3 text-right {{if eq .Category.TransactionType "expense"}}text-danger{{end}}{{if eq .Category.TransactionType "income"}}text-success{{end}} '>
+                            $ {{.Amount}}
+                        </div>
+                    </div>
+
+                    {{end}}
+
+                </div>
+            </div>
+        </div>
+        {{end}}
+
+
+
+
+    </div>
 
 
 </body>

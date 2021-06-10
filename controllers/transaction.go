@@ -131,8 +131,11 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 				imgUrl = config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02") + "+" + date.Format("15") + "%3A" + date.Format("04") + "%3A" + date.Format("05") + ".jpg"
 			}
 
+			layout := "2006-01-02"
+			dateString, _ := time.Parse(layout, r.FormValue("transactionDate"))
+
 			trx := models.Transaction{
-				Date:       date,
+				Date:       dateString,
 				AccountID:  uint(account_id),
 				CategoryID: uint(category_id),
 				UserID:     session.Values["user"].(models.User).ID,
@@ -290,8 +293,11 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 				imgUrl = config.AWS_IMG_PATH + username + "_" + date.Format("2006-01-02") + "+" + date.Format("15") + "%3A" + date.Format("04") + "%3A" + date.Format("05") + ".jpg"
 			}
 
+			layout := "2006-01-02"
+			dateString, _ := time.Parse(layout, r.FormValue("transactionDate"))
+
 			trx := models.Transaction{
-				Date:       date,
+				Date:       dateString,
 				AccountID:  uint(account_id),
 				CategoryID: uint(category_id),
 				UserID:     session.Values["user"].(models.User).ID,

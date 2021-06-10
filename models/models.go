@@ -73,3 +73,19 @@ type Transaction struct {
 func (Transaction) TableName() string {
 	return "transactions"
 }
+
+type DashboardView struct {
+	MonthYear    string
+	Income       float64
+	Expenses     float64
+	Total        float64
+	Transactions []DashboardTransactionsView
+}
+
+type DashboardTransactionsView struct {
+	Day           string
+	Date          string
+	TotalIncome   float64
+	TotalExpenses float64
+	Transactions  []Transaction
+}
