@@ -30,7 +30,7 @@ type Event struct {
 func show(ctx context.Context, s3Event events.S3Event) (events.S3Event, error) {
 
 	originalBucket := s3Event.Records[0].S3.Bucket.Name
-    //thumbnailBucket :=
+    thumbnailBucket := ""
     imageKey := s3Event.Records[0].S3.Object.Key 
     //maxWidth
     //maxHeight
@@ -63,12 +63,11 @@ func show(ctx context.Context, s3Event events.S3Event) (events.S3Event, error) {
     }
 
     log.Print(numBytes)
-
 	//downsize image
 
 	//upload to thumbnail bucket
     _, err = s3uploader.Upload(&s3manager.UploadInput{
-        Bucket: "thumbnails-lambda-bucket7",
+        Bucket: thumbnailBucket,
         Key:    imageKey,
         Body:   file,
         ACL:    aws.String("public-read"),
