@@ -338,13 +338,14 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 			dateString, _ := time.Parse(layout, r.FormValue("transactionDate"))
 
 			trx := models.Transaction{
-				Date:       dateString,
-				AccountID:  uint(account_id),
-				CategoryID: uint(category_id),
-				UserID:     session.Values["user"].(models.User).ID,
-				Amount:     amount,
-				Note:       r.FormValue("notes"),
-				ImgURL:     imgUrl,
+				Date:         dateString,
+				AccountID:    uint(account_id),
+				CategoryID:   uint(category_id),
+				UserID:       session.Values["user"].(models.User).ID,
+				Amount:       amount,
+				Note:         r.FormValue("notes"),
+				ImgURL:       imgUrl,
+				ThumbnailURL: CreateThumbnailAPI(imgUrl),
 			}
 			db.Create(&trx)
 
