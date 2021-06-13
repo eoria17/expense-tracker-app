@@ -79,7 +79,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 
 			user := ae.GetUser(r.FormValue("username"))
 
-			if authResp == nil {
+			if authResp.ChallengeParameters == nil {
 				login_err = "email or password is invalid"
 				login_err_bool = true
 			} else {
