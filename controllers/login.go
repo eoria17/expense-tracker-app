@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"text/template"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/eoria17/expense-tracker-app/config"
@@ -66,7 +67,7 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 
 				AuthParameters: map[string]*string{
 					"USERNAME": aws.String(username),
-					"PASSWORD": aws.String(r.FormValue("password")),//aws.String(r.FormValue("password")),
+					"PASSWORD": aws.String(r.FormValue("password")), //aws.String(r.FormValue("password")),
 				},
 				ClientId: aws.String(config.COGNITO_CLIENTID), // this is the app client ID
 			}
