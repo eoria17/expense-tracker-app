@@ -4,17 +4,32 @@
     <!-- Nav Bar -->
     {{template "navigation" .}}
 
-    <div class="wrapper">
-        <h1>My Wallets</h1>
+    <script src="{{.assets}}wallets.js"></script>
 
-        {{range .walletsData}} 
-            <a href="/wallet/{{.ID}}">{{.Name}}</a> <br>
-        {{end}}
-        
-        <br>
-        <a href="/wallet/create">Add new wallet</a>
+    <div class="container mt-5 bg-white">
+        <h1>
+            My
+            <small class="text-muted">Wallets</small>
+        </h1>
+
+        <table class="table mt-5 table-hover ">
+            <thead>
+                <tr>
+                    <th scope="col">Account Name</th>
+                    <th scope="col" class="text-right">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .walletsData}}
+                <tr data-href="/wallet/{{.ID}}" class="table-row">
+                    <td>{{.Name}}</td>
+                    <td class="text-right">$ {{.Amount}}</td>
+                </tr>
+
+                {{end}}
+            </tbody>
+        </table>
     </div>
-
 </body>
 
 </html>

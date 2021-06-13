@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -14,6 +15,34 @@ import (
 	"github.com/eoria17/expense-tracker-app/models"
 	"github.com/gorilla/mux"
 )
+
+func CreateThumbnailAPI(imgURL string) string {
+	requestBody, err := json.Marshal(map[string]string{
+		"imageurl": imgURL,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	resp, err := http.Post(config.AWS_API_TRANSACTION, "application/json", bytes.NewBuffer(requestBody))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer resp.Body.Close()
+
+	responseMap := make(map[string]string)
+
+	err = json.NewDecoder(resp.Body).Decode(&responseMap)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(responseMap["thumbnailurl"])
+
+	return responseMap["thumbnailurl"]
+}
 
 func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 	db := ae.Storage.DB
@@ -81,10 +110,11 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 
 			if !error_message_bool {
 				_, err = ae.S3Client.Upload(&s3manager.UploadInput{
-					Bucket: aws.String(config.AWS_BUCKET_NAME),
-					Key:    aws.String(username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg"),
-					Body:   fileBytes,
-					ACL:    aws.String("public-read"),
+					Bucket:      aws.String(config.AWS_BUCKET_NAME),
+					Key:         aws.String(username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg"),
+					Body:        fileBytes,
+					ContentType: aws.String("image/jpeg"),
+					ACL:         aws.String("public-read"),
 				})
 
 				if err != nil {
@@ -139,14 +169,16 @@ func (ae AppEngine) CreateExpenseTrx(w http.ResponseWriter, r *http.Request) {
 			dateString, _ := time.Parse(layout, r.FormValue("transactionDate"))
 
 			trx := models.Transaction{
-				Date:       dateString,
-				AccountID:  uint(account_id),
-				CategoryID: uint(category_id),
-				UserID:     session.Values["user"].(models.User).ID,
-				Amount:     amount,
-				Note:       r.FormValue("notes"),
-				ImgURL:     imgUrl,
+				Date:         dateString,
+				AccountID:    uint(account_id),
+				CategoryID:   uint(category_id),
+				UserID:       session.Values["user"].(models.User).ID,
+				Amount:       amount,
+				Note:         r.FormValue("notes"),
+				ImgURL:       imgUrl,
+				ThumbnailURL: CreateThumbnailAPI(imgUrl),
 			}
+
 			db.Create(&trx)
 
 			//update account balance
@@ -247,10 +279,11 @@ func (ae AppEngine) CreateIncomeTrx(w http.ResponseWriter, r *http.Request) {
 
 			if !error_message_bool {
 				_, err = ae.S3Client.Upload(&s3manager.UploadInput{
-					Bucket: aws.String(config.AWS_BUCKET_NAME),
-					Key:    aws.String(username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg"),
-					Body:   fileBytes,
-					ACL:    aws.String("public-read"),
+					Bucket:      aws.String(config.AWS_BUCKET_NAME),
+					Key:         aws.String(username + "_" + date.Format("2006-01-02 15:04:05") + ".jpg"),
+					Body:        fileBytes,
+					ContentType: aws.String("image/jpeg"),
+					ACL:         aws.String("public-read"),
 				})
 
 				if err != nil {
@@ -371,7 +404,7 @@ func (ae AppEngine) Transaction(w http.ResponseWriter, r *http.Request) {
 
 	//get transaction data from database
 	transactionData := models.Transaction{}
-	ae.Storage.DB.Where("transactions.id = ? AND transactions.user_id = ?", transaction_id, user_id).First(&transactionData)
+	ae.Storage.DB.Where("transactions.id = ? AND user_id = ?", transaction_id, user_id).First(&transactionData)
 
 	//get transaction category
 	category := models.Category{}
