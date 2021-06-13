@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"text/template"
-
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/gorilla/sessions"
 )
@@ -59,9 +60,25 @@ func (ae AppEngine) Login(w http.ResponseWriter, r *http.Request) {
 		//search DB for login data
 		if !username_err_bool && !password_err_bool {
 
+			//login with cognito
+			params := &cognitoidentityprovider.InitiateAuthInput{
+				AuthFlow: aws.String("USER_PASSWORD_AUTH"),
+
+				AuthParameters: map[string]*string{
+					"USERNAME": aws.String(username),
+					"PASSWORD": aws.String(r.FormValue("password")),//aws.String(r.FormValue("password")),
+				},
+				ClientId: aws.String(config.COGNITO_CLIENTID), // this is the app client ID
+			}
+			cog := ae.Cognito
+			authResp, err := cog.InitiateAuth(params)
+
+			fmt.Print(authResp)
+			fmt.Print(err)
+
 			user := ae.GetUser(r.FormValue("username"))
 
-			if !CheckPasswordHash(r.FormValue("password"), user.Password) {
+			if authResp == nil {
 				login_err = "email or password is invalid"
 				login_err_bool = true
 			} else {

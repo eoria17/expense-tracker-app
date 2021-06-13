@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -40,10 +41,15 @@ func main() {
 	//s3c := s3.New(sess)
 	s3uploader := s3manager.NewUploader(sess)
 
+
+	//cognito client
+	cognito := cognitoidentityprovider.New(sess)
+
 	//dependency injection
 	appEngine := controllers.AppEngine{
 		Storage:  storage_,
 		S3Client: s3uploader,
+		Cognito: cognito,
 	}
 
 	//create route handler
