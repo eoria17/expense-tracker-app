@@ -4,16 +4,68 @@
     <!-- Nav Bar -->
     {{template "navigation" .}}
 
-    <div class="wrapper">
-        <h1>{{.category.Name}}</h1>
-        <p>{{.transactionData.Note}}</p>
-        <p>{{.transactionData.Date.Format "02-01-2006 15:04"}}</p>
-        <p>${{.transactionData.Amount}}</p>
-        <img src="{{.transactionData.ImgURL}}" width="200" height="200"><br>
-        
-        <a href="/transaction/delete/{{.transactionData.ID}}">Delete transaction</a>
-    </div>
+    <div class="container mt-5 bg-white">
 
+        <div class="m-auto text-center">
+            <h1>
+                Category
+                <small class="text-muted">({{.category.Name}} - {{.category.TransactionType}})</small>
+            </h1>
+        </div>
+
+        <div class="row mt-4">
+
+            <div class="col-4"></div>
+
+            <div class="col-2">
+                <strong>Date</strong>
+            </div>
+            <div class="col-auto">
+                {{.transactionData.Date.Format "02-01-2006"}}
+            </div>
+
+            <div class="col-4"></div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-4"></div>
+            <div class="col-2">
+                <strong>Notes</strong>
+            </div>
+            <div class="col-auto">
+                {{.transactionData.Note}}
+            </div>
+            <div class="col-4"></div>
+        </div>
+
+        <div class=" row mt-2">
+            <div class="col-4"></div>
+            <div class="col-2">
+                <strong>Amount</strong>
+            </div>
+            <div class="col-auto">
+                ${{.transactionData.Amount}}
+            </div>
+            <div class="col-4"></div>
+        </div>
+
+
+
+        {{if .transactionData.ImgURL}}
+        <div class=" row mt-4">
+            <div class="col-4"></div>
+            <div class="col-4 text-center">
+                <strong>Transaction Image</strong>
+            </div>
+            <div class="col-4"></div>
+        </div>
+
+        <img src="{{.transactionData.ImgURL}}" alt="transaction-img" class="img-fluid mb-2"> {{end}}
+
+
+
+
+    </div>
 </body>
 
 </html>

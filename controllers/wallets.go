@@ -34,7 +34,7 @@ func (ae AppEngine) Wallets(w http.ResponseWriter, r *http.Request) {
 	//var name []string
 	//ae.Storage.DB.Raw("SELECT name FROM wallet").Scan(&names)
 
-    ae.Storage.DB.Where("accounts.user_id = ?", user_id).Find(&wallets)
+	ae.Storage.DB.Where("user_id = ?", user_id).Find(&wallets)
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH, config.NAVIGATION_PATH)
 

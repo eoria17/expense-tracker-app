@@ -56,16 +56,17 @@ func (Account) TableName() string {
 }
 
 type Transaction struct {
-	Date       time.Time
-	AccountID  uint
-	Account    Account
-	CategoryID uint
-	Category   Category
-	UserID     uint
-	User       User
-	Amount     float64
-	Note       string
-	ImgURL     string
+	Date         time.Time
+	AccountID    uint
+	Account      Account
+	CategoryID   uint
+	Category     Category
+	UserID       uint
+	User         User
+	Amount       float64
+	Note         string
+	ImgURL       string
+	ThumbnailURL string
 
 	gorm.Model
 }
