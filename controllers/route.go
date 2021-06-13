@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
@@ -11,6 +12,7 @@ import (
 type AppEngine struct {
 	Storage  *config.Storage
 	S3Client *s3manager.Uploader
+	Cognito *cognitoidentityprovider.CognitoIdentityProvider
 }
 
 func (ae AppEngine) Route(r *mux.Router) {

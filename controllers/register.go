@@ -5,9 +5,11 @@ import (
 	"net/http"
 	"text/template"
 
+	//"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/eoria17/expense-tracker-app/config"
 	"github.com/eoria17/expense-tracker-app/models"
-	"golang.org/x/crypto/bcrypt"
+	//"golang.org/x/crypto/bcrypt"
 )
 
 func (ae AppEngine) Register(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +76,7 @@ func (ae AppEngine) Register(w http.ResponseWriter, r *http.Request) {
 				username_err = "Username already exist, please enter a different username."
 			} else {
 
-				password, err := bcrypt.GenerateFromPassword([]byte(r.FormValue("password")), 14)
+				//password, err := bcrypt.GenerateFromPassword([]byte(r.FormValue("password")), 14)
 				if err != nil {
 					fmt.Println(err)
 				}
@@ -82,17 +84,35 @@ func (ae AppEngine) Register(w http.ResponseWriter, r *http.Request) {
 				newUser := models.User{
 					Email:    r.FormValue("email"),
 					Username: r.FormValue("username"),
-					Password: string(password),
+					Password: string(""),
 				}
 
 				ae.Storage.DB.Create(&newUser)
 
-				//redirect to login
-				http.Redirect(w, r, "/", http.StatusFound)
-				return
+				
 			}
 
 		}
+		clientID := config.COGNITO_CLIENTID
+		password := r.FormValue("password")
+
+		signUpInput := &cognitoidentityprovider.SignUpInput{
+			AnalyticsMetadata: &cognitoidentityprovider.AnalyticsMetadataType{},
+			ClientId:          &clientID,
+			ClientMetadata:    map[string]*string{},
+			Password:          &password,
+			UserAttributes:    []*cognitoidentityprovider.AttributeType{},
+			UserContextData:   &cognitoidentityprovider.UserContextDataType{},
+			Username:          &username,
+			ValidationData:    []*cognitoidentityprovider.AttributeType{},
+		}
+
+		//create user in cognito
+		ae.Cognito.SignUp(signUpInput)
+
+		//redirect to login
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	t, _ := template.ParseFiles(viewPage, config.HEADER_PATH)
